@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
 import java.util.List;
@@ -20,24 +21,13 @@ public class Main {
 
         try {
 
-            // this part just for testing retrieve data from xml
-
-            // Load the testing XML document
-            Document document = loadXMLDocument(filePath);
-
-            // Parse students from the document
-            List<Student> students = StudentXMLParser.parseStudents(document.getDocumentElement().getChildNodes());
-
-
-            for(Student student : students){
-                System.out.println(student.toString());
-            }
 
 
             // Load the real XML document
             Document newDocument = loadXMLDocument(inputFilePath);
 
 
+            List<Student> students = new ArrayList<>();
             // Allow user to add students
             System.out.print("Enter number of students to add: ");
             int count = scanner.nextInt();
@@ -47,7 +37,7 @@ public class Main {
                 students.add(getStudents(scanner));
             }
 
-            StudentXMLParser.writeStudentsToXML(students, inputFilePath);
+            StudentXMLParser.writeStudentsToXML(students, newDocument);
 
             // Main menu loop
             while (true) {
@@ -94,7 +84,7 @@ public class Main {
     }
 
     // Method to load XML document once
-    private static Document loadXMLDocument(String filePath) throws Exception {
+    static Document loadXMLDocument(String filePath) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         return builder.parse(new File(filePath));

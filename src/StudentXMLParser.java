@@ -60,78 +60,59 @@ public class StudentXMLParser {
 
 
     /**
-     * Writes a list of Student objects to an XML file.
+     * Writes a list of Student objects to an XML file using the provided Document.
      *
+     * @param document The XML document to update with student data.
      * @param students List of students to be saved.
-     * @param fileName Name of the XML file to write.
      */
-    public static void writeStudentsToXML(List<Student> students, String fileName) {
+    public static void writeStudentsToXML(List<Student> students , Document document) {
         try {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.newDocument();
-
-            // Create the root element "University" and append it to the document
-
-            Element rootElement = doc.createElement("University");
-            doc.appendChild(rootElement);
-
+            Element rootElement = (Element) document.getElementsByTagName("University").item(0);
+            if (rootElement == null) {
+                // If no root element "University" exists, create one
+                rootElement = document.createElement("University");
+                document.appendChild(rootElement);
+            }
 
             // Loop through each student in the list and add their information as XML elements
             for (Student student : students) {
-
                 // Create a "Student" element and set the "ID" attribute with the student's ID
-                Element studentElement = doc.createElement("Student");
+                Element studentElement = document.createElement("Student");
                 studentElement.setAttribute("ID", student.getID());
 
                 // Create and append the needed elements with the student element
-
-                // First Name
-                Element firstName = doc.createElement("FirstName");
-                firstName.appendChild(doc.createTextNode(student.getFirstName()));
+                Element firstName = document.createElement("FirstName");
+                firstName.appendChild(document.createTextNode(student.getFirstName()));
                 studentElement.appendChild(firstName);
 
-                // last Name
-                Element lastName = doc.createElement("LastName");
-                lastName.appendChild(doc.createTextNode(student.getLastName()));
+                Element lastName = document.createElement("LastName");
+                lastName.appendChild(document.createTextNode(student.getLastName()));
                 studentElement.appendChild(lastName);
 
-
-                // gender
-                Element gender = doc.createElement("Gender");
-                gender.appendChild(doc.createTextNode(student.getGender()));
+                Element gender = document.createElement("Gender");
+                gender.appendChild(document.createTextNode(student.getGender()));
                 studentElement.appendChild(gender);
 
-
-                // gpa
-                Element gpa = doc.createElement("GPA");
-                gpa.appendChild(doc.createTextNode(String.valueOf(student.getGpa())));
+                Element gpa = document.createElement("GPA");
+                gpa.appendChild(document.createTextNode(String.valueOf(student.getGpa())));
                 studentElement.appendChild(gpa);
 
-                // level
-                Element level = doc.createElement("Level");
-                level.appendChild(doc.createTextNode(String.valueOf(student.getLevel())));
+                Element level = document.createElement("Level");
+                level.appendChild(document.createTextNode(String.valueOf(student.getLevel())));
                 studentElement.appendChild(level);
 
-                // address
-                Element address = doc.createElement("Address");
-                address.appendChild(doc.createTextNode(student.getAddress()));
+                Element address = document.createElement("Address");
+                address.appendChild(document.createTextNode(student.getAddress()));
                 studentElement.appendChild(address);
 
-                // add student element to the root element "university"
+                // Add student element to the root element "University"
                 rootElement.appendChild(studentElement);
             }
 
-            // Write to XML file
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
+            // Save the updated XML document to file
+            saveDocumentToFile(document);
 
-            // Specify local file path
-            StreamResult result = new StreamResult(new File(fileName));
-            transformer.transform(source, result);
-
-            System.out.println("Data saved successfully to " + fileName);
+            System.out.println("Data appended successfully to the document.");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,12 +193,13 @@ public class StudentXMLParser {
         return removed;
     }
 
+    // =================================================================================================================
 
     private static void saveDocumentToFile(Document document) throws Exception {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(document);
-        StreamResult result = new StreamResult(new File("src/university.xml"));
+        StreamResult result = new StreamResult(new File("src/input_university.xml"));
         transformer.transform(source, result);
     }
 
