@@ -65,8 +65,13 @@ public class StudentXMLParser {
      * @param document The XML document to update with student data.
      * @param students List of students to be saved.
      */
-    public static void writeStudentsToXML(List<Student> students , Document document) {
+    public static void writeStudentsToXML(List<Student> students , Document document) throws DuplicateStudentIDException {
         try {
+
+            NodeList nodeList = document.getElementsByTagName("Student");
+            List<Student> existingStudents = parseStudents(nodeList);
+
+
             Element rootElement = (Element) document.getElementsByTagName("University").item(0);
             if (rootElement == null) {
                 // If no root element "University" exists, create one
@@ -76,6 +81,14 @@ public class StudentXMLParser {
 
             // Loop through each student in the list and add their information as XML elements
             for (Student student : students) {
+                // Check if the student ID already exists
+
+                boolean idExists = existingStudents.stream()
+                        .anyMatch(existingStudent -> existingStudent.getID().equals(student.getID()));
+
+                if (idExists) {
+                    throw new DuplicateStudentIDException("Student with ID " + student.getID() + " already exists.");
+                }
                 // Create a "Student" element and set the "ID" attribute with the student's ID
                 Element studentElement = document.createElement("Student");
                 studentElement.setAttribute("ID", student.getID());
@@ -114,7 +127,11 @@ public class StudentXMLParser {
 
             System.out.println("Data appended successfully to the document.");
 
-        } catch (Exception e) {
+        }
+        catch (DuplicateStudentIDException e) {
+            throw e;  // Rethrow the DuplicateStudentIDException to be handled by the caller
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -100,8 +100,16 @@ public class StudentFormWindow extends JFrame {
             newDocument = Main.loadXMLDocument("src/input_university.xml");
             outputArea.setText("Added new student:\n" + newStudent);
             dispose();  // Close the form window after submission
-        } catch (Exception e) {
+        }
+        catch (DuplicateStudentIDException e) {
+
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+        catch (Exception e) {
+
             JOptionPane.showMessageDialog(this, "Failed to add student. Please ensure all inputs are valid.", "Error", JOptionPane.ERROR_MESSAGE);
+
         }
     }
 

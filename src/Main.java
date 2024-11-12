@@ -78,7 +78,11 @@ public class Main {
                         System.out.println("Invalid choice. Please try again.");
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (DuplicateStudentIDException e) {
+            System.err.println(e.getMessage());
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
