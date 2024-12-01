@@ -30,7 +30,7 @@ public class Main {
                 students.add(getStudents(scanner));
             }
 
-            StudentXMLParser.writeStudentsToXML(students, newDocument);
+            StudentXMLParser.writeStudentsToXML(students, newDocument , false);
 
             // Main menu loop
             while (true) {

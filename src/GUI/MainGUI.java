@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import  GUI_Logic.MainGUILogic;
+import exception.DuplicateStudentIDException;
 import student.Student;
 
 public class MainGUI extends JFrame {
@@ -106,7 +107,7 @@ public class MainGUI extends JFrame {
 
 //        updateStudentButton.addActionListener();
         searchButton.addActionListener(e -> showSearchPanel());
-//        sortButton.addActionListener(e ->outputArea.setText(guiLogic.sortStudentDesByLevel()));
+        sortButton.addActionListener(e -> showSortDialog());
     }
 
     // =================================================================================================================
@@ -171,7 +172,66 @@ public class MainGUI extends JFrame {
     }
 
     // =====================================================================================================
+    private void showSortDialog() {
+        // Create a dialog
+        JDialog sortDialog = new JDialog(this, "Sort Options", true);
+        sortDialog.setSize(300, 150);
+        sortDialog.setLayout(new BorderLayout());
 
+        // Panel for field selection
+        JPanel fieldPanel = new JPanel(new FlowLayout());
+        JLabel fieldLabel = new JLabel("Sort by:");
+        String[] fields = {"ID", "First Name", "Last Name", "GPA", "Level", "Gender", "Address"};
+        JComboBox<String> fieldDropdown = new JComboBox<>(fields);
+        fieldPanel.add(fieldLabel);
+        fieldPanel.add(fieldDropdown);
+
+        // Panel for sort order
+        JPanel orderPanel = new JPanel(new FlowLayout());
+        JLabel orderLabel = new JLabel("Order:");
+        JRadioButton ascButton = new JRadioButton("Ascending");
+        JRadioButton descButton = new JRadioButton("Descending");
+        ButtonGroup orderGroup = new ButtonGroup();
+        orderGroup.add(ascButton);
+        orderGroup.add(descButton);
+        orderPanel.add(orderLabel);
+        orderPanel.add(ascButton);
+        orderPanel.add(descButton);
+
+        ascButton.setSelected(true);
+
+
+        // Sort button
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        JButton performSortButton = new JButton("Sort");
+        performSortButton.addActionListener(e -> {
+            String selectedField = (String) fieldDropdown.getSelectedItem();
+            boolean isDescending = descButton.isSelected();
+
+            // Call the sortStudents method with the selected field and order
+            assert selectedField != null;
+            String sortedOutput = null;
+            try {
+                sortedOutput = guiLogic.sortStudents(selectedField, isDescending);
+            } catch (DuplicateStudentIDException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            // Display the sorted output in the output area
+            outputArea.setText(sortedOutput);
+            sortDialog.dispose();
+        });
+
+        buttonPanel.add(performSortButton);
+
+        // Add panels to dialog
+        sortDialog.add(fieldPanel, BorderLayout.NORTH);
+        sortDialog.add(orderPanel, BorderLayout.CENTER);
+        sortDialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        sortDialog.setLocationRelativeTo(this);
+        sortDialog.setVisible(true);
+    }
 
 
     // =====================================================================================================

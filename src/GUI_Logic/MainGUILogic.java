@@ -1,5 +1,6 @@
 package GUI_Logic;
 
+import exception.DuplicateStudentIDException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import student.Student;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class MainGUILogic {
 
-    private final Document newDocument;
+    private Document newDocument;
 
     public MainGUILogic() {
         // Initialize the XML document
@@ -167,147 +168,53 @@ public class MainGUILogic {
 
     // =================================================================================================================
 
-    public String sortStudentAscByID(){
+    public String sortStudents(String field, boolean isDescending) throws DuplicateStudentIDException {
         NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
         List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparingInt((Student student) -> Integer.parseInt(student.ID())));
+
+        Comparator<Student> comparator;
+
+        // Determine the comparator based on the field
+        switch (field.toLowerCase()) {
+            case "id":
+                comparator = Comparator.comparingInt(student -> Integer.parseInt(student.ID()));
+                break;
+            case "first name":
+                comparator = Comparator.comparing(Student::firstName);
+                break;
+            case "last name":
+                comparator = Comparator.comparing(Student::lastName);
+                break;
+            case "gpa":
+                comparator = Comparator.comparingDouble(Student::gpa);
+                break;
+            case "gender":
+                comparator = Comparator.comparing(Student::gender);
+                break;
+            case "level":
+                comparator = Comparator.comparingInt(Student::level);
+                break;
+            case "address":
+                comparator = Comparator.comparing(Student::address);
+                break;
+            default:
+                return "Invalid sort field: " + field;
+        }
+
+        // Reverse comparator for descending order if needed
+        if (isDescending) {
+            comparator = comparator.reversed();
+        }
+
+        // Sort the list
+        students.sort(comparator);
+
+        newDocument =  StudentXMLParser.writeStudentsToXML(students , newDocument , true);
 
         return sortOutputBuilder(students);
     }
 
     // =================================================================================================================
-
-    public String sortStudentDesByID(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparingInt((Student student) -> Integer.parseInt(student.ID())).reversed());
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-    public String sortStudentAscByFname(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparing(Student::firstName));
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-    public String sortStudentDesByFname(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparing(Student::firstName).reversed());
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-    public String sortStudentAscByLname(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparing(Student::lastName));
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-    public String sortStudentDesByLname(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparing(Student::lastName).reversed());
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-    public String sortStudentAscByGPA(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparingDouble(Student::gpa));
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-    public String sortStudentDesByGPA(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparingDouble(Student::gpa).reversed());
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-    public String sortStudentAscByGender(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparing(Student::gender));
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-    public String sortStudentDesByGender(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparing(Student::gender).reversed());
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-    public String sortStudentAscByLevel(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparingInt(Student::level));
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-    public String sortStudentDesByLevel(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparingInt(Student::level).reversed());
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-    public String sortStudentAscByAddress(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparing(Student::address));
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-    public String sortStudentDesByAddress(){
-        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
-        List<Student> students = StudentXMLParser.parseStudents(nodeList);
-        students.sort(Comparator.comparing(Student::address).reversed());
-
-        return sortOutputBuilder(students);
-    }
-
-    // =================================================================================================================
-
-
     public String sortOutputBuilder(List<Student> students){
         StringBuilder output = new StringBuilder("All Students:\n");
         output.append("==============================================\n");

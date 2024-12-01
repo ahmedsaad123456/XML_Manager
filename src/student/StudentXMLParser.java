@@ -84,8 +84,13 @@ public class StudentXMLParser {
      * @param document The XML document to update with student data.
      * @param students List of students to be saved.
      */
-    public static void writeStudentsToXML(List<Student> students , Document document) throws DuplicateStudentIDException {
+    public static Document writeStudentsToXML(List<Student> students , Document document , boolean overwrite) throws DuplicateStudentIDException {
         try {
+
+            // If overwrite is true, clear the existing content of the document
+            if (overwrite) {
+                document = createNewDocument();
+            }
 
             NodeList nodeList = document.getElementsByTagName("Student");
             List<Student> existingStudents = parseStudents(nodeList);
@@ -144,7 +149,10 @@ public class StudentXMLParser {
             // Save the updated XML document to file
             saveDocumentToFile(document);
 
+
             System.out.println("Data appended successfully to the document.");
+
+            return  document;
 
         }
         catch (DuplicateStudentIDException e) {
@@ -152,7 +160,28 @@ public class StudentXMLParser {
         }
         catch (Exception e) {
             e.printStackTrace();
+            return  document;
         }
+
+    }
+    // =================================================================================================================
+
+
+    /**
+     * Creates a new Document (clears the existing content).
+     * @return A new empty Document.
+     * @throws Exception if there's an error creating the document.
+     */
+    private static Document createNewDocument() throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.newDocument();
+
+        // Create a root element "University"
+        Element rootElement = document.createElement("University");
+        document.appendChild(rootElement);
+
+        return document;
     }
 
     // =================================================================================================================

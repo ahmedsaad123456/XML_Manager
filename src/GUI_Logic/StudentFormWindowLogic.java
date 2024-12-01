@@ -45,7 +45,7 @@ public class StudentFormWindowLogic {
         int level = Integer.parseInt(levelStr);
 
         Student newStudent = new Student(id, firstName, lastName, gender, gpa, level, address);
-        StudentXMLParser.writeStudentsToXML(List.of(newStudent), newDocument);
+        StudentXMLParser.writeStudentsToXML(List.of(newStudent), newDocument , false);
         latestStudent = newStudent;
     }
 
