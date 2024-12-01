@@ -176,7 +176,6 @@ public class StudentXMLParser {
         return students;
     }
 
-
     // =================================================================================================================
 
     /**
@@ -200,6 +199,105 @@ public class StudentXMLParser {
 
     // =================================================================================================================
 
+    /**
+     * Parses a NodeList of student nodes and creates a list of Student objects with searched id.
+     * @param nodeList The NodeList containing XML nodes.
+     * @param id searched id
+     * @return A list of Student objects with the searched id.
+     */
+    public static List<Student> getStudentByID(NodeList nodeList , String id){
+        List<Student> students = new ArrayList<>();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            Student student = fromNode(node);
+            if (student!= null && student.ID().equals(id)) {
+                students.add(student);
+            }
+        }
+        return students;
+    }
+
+    // =================================================================================================================
+
+    /**
+     * Parses a NodeList of student nodes and creates a list of Student objects with searched lastname.
+     * @param nodeList The NodeList containing XML nodes.
+     * @param lastname searched lastname
+     * @return A list of Student objects with the searched lastname.
+     */
+    public static List<Student> getStudentByLastName(NodeList nodeList, String lastname){
+        List<Student> students = new ArrayList<>();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            Student student = fromNode(node);
+            if (student!= null && student.lastName().equals(lastname)) {
+                students.add(student);
+            }
+        }
+        return students;
+    }
+
+    // =================================================================================================================
+
+    /**
+     * Parses a NodeList of student nodes and creates a list of Student objects with searched gender.
+     * @param nodeList The NodeList containing XML nodes.
+     * @param gender searched gender
+     * @return A list of Student objects with the searched gender.
+     */
+    public static List<Student> getStudentByGender(NodeList nodeList, String gender){
+        List<Student> students = new ArrayList<>();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            Student student = fromNode(node);
+            if (student!= null && student.gender().equals(gender)) {
+                students.add(student);
+            }
+        }
+        return students;
+    }
+
+    // =================================================================================================================
+
+    /**
+     * Parses a NodeList of student nodes and creates a list of Student objects with searched level.
+     * @param nodeList The NodeList containing XML nodes.
+     * @param level searched level
+     * @return A list of Student objects with the searched level.
+     */
+    public static List<Student> getStudentByLevel(NodeList nodeList, int level){
+        List<Student> students = new ArrayList<>();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            Student student = fromNode(node);
+            if (student!= null && student.level() == level) {
+                students.add(student);
+            }
+        }
+        return students;
+    }
+
+    // =================================================================================================================
+
+    /**
+     * Parses a NodeList of student nodes and creates a list of Student objects with searched address.
+     * @param nodeList The NodeList containing XML nodes.
+     * @param address searched address
+     * @return A list of Student objects with the searched address.
+     */
+    public static List<Student> getStudentByAddress(NodeList nodeList, String address){
+        List<Student> students = new ArrayList<>();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            Student student = fromNode(node);
+            if (student!= null && student.address().equals(address)) {
+                students.add(student);
+            }
+        }
+        return students;
+    }
+
+    // =================================================================================================================
 
     /**
      * Removes a student from the XML file by ID.

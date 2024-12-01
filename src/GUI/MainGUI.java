@@ -3,6 +3,8 @@ package GUI;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.function.Function;
+
 import  GUI_Logic.MainGUILogic;
 public class MainGUI extends JFrame {
 
@@ -100,12 +102,72 @@ public class MainGUI extends JFrame {
 
         // Adding placeholder listeners for other buttons
 //        updateStudentButton.addActionListener();
-//        searchButton.addActionListener();
+        searchButton.addActionListener(e -> showSearchPanel());
 //        sortButton.addActionListener();
     }
 
     // =================================================================================================================
 
+    /**
+     * create 7 buttons for search
+     * and create listener for them
+     */
+    private void showSearchPanel() {
+        JFrame searchFrame = new JFrame("Search Students");
+        searchFrame.setSize(300, 400);
+        searchFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        searchFrame.setLocationRelativeTo(this);
+
+        JPanel searchPanel = new JPanel(new GridLayout(7, 1, 5, 5));
+
+        // Create buttons for each search type
+        JButton searchByIdButton = new JButton("Search by ID");
+        JButton searchByFirstNameButton = new JButton("Search by First Name");
+        JButton searchByLastNameButton = new JButton("Search by Last Name");
+        JButton searchByGpaButton = new JButton("Search by GPA");
+        JButton searchByLevelButton = new JButton("Search by Level");
+        JButton searchByGenderButton = new JButton("Search by Gender");
+        JButton searchByAddressButton = new JButton("Search by Address");
+
+        // Add buttons to panel
+        searchPanel.add(searchByIdButton);
+        searchPanel.add(searchByFirstNameButton);
+        searchPanel.add(searchByLastNameButton);
+        searchPanel.add(searchByGpaButton);
+        searchPanel.add(searchByLevelButton);
+        searchPanel.add(searchByGenderButton);
+        searchPanel.add(searchByAddressButton);
+
+        // Add panel to frame
+        searchFrame.add(searchPanel);
+        searchFrame.setVisible(true);
+
+        // Add action listeners for search buttons
+        searchByIdButton.addActionListener(e -> search("ID", guiLogic::searchByID));
+        searchByFirstNameButton.addActionListener(e -> search("First Name", guiLogic::searchByfName));
+        searchByLastNameButton.addActionListener(e -> search("Last Name", guiLogic::searchBylName));
+        searchByGpaButton.addActionListener(e -> search("GPA", guiLogic::searchByGPA));
+        searchByLevelButton.addActionListener(e -> search("Level", guiLogic::searchByLevel));
+        searchByGenderButton.addActionListener(e -> search("Gender", guiLogic::searchByGender));
+        searchByAddressButton.addActionListener(e -> search("Address", guiLogic::searchByAddress));
+    }
+
+// =================================================================================================================
+
+    /**
+     * Method to perform a search with a given field and input
+     */
+    private void search(String field, Function<String, String> searchFunction) {
+        String input = JOptionPane.showInputDialog("Enter " + field + " to search:");
+        if (input != null && !input.isEmpty()) {
+            String result = searchFunction.apply(input);
+            outputArea.setText(result);
+        } else {
+            JOptionPane.showMessageDialog(this, "No input provided.", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    // =====================================================================================================
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             MainGUI gui = new MainGUI();

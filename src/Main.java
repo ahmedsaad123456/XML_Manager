@@ -39,7 +39,12 @@ public class Main {
                 System.out.println("2- Get student by GPA");
                 System.out.println("3- Get student by first name");
                 System.out.println("4- Remove student by ID");
-                System.out.println("5- Exit");
+                System.out.println("5- search by id");
+                System.out.println("6- search by last name");
+                System.out.println("7- search by gender");
+                System.out.println("8- search by level");
+                System.out.println("9- search by address");
+                System.out.println("10- Exit");
 
                 int choice = scanner.nextInt();
                 scanner.nextLine();
@@ -65,6 +70,31 @@ public class Main {
                         removeStudentById(newDocument, id);
                         break;
                     case 5:
+                        System.out.println("enter id ");
+                        String idd = scanner.nextLine();
+                        searchByID(newDocument, idd);
+                        break;
+                    case 6:
+                        System.out.println("enter last name ");
+                        String last = scanner.nextLine();
+                        searchByLastName(newDocument, last);
+                        break;
+                    case 7:
+                        System.out.println("enter gender ");
+                        String gen = scanner.nextLine();
+                        searchByGender(newDocument, gen);
+                        break;
+                    case 8:
+                        System.out.println("enter level ");
+                        int lev = scanner.nextInt();
+                        searchByLevel(newDocument, lev);
+                        break;
+                    case 9:
+                        System.out.println("enter address ");
+                        String add = scanner.nextLine();
+                        searchByAddress(newDocument, add);
+                        break;
+                    case 10:
                         System.out.println("Exiting program.");
                         return;
                     default:
@@ -117,6 +147,8 @@ public class Main {
     private static void searchByGPA(Document document, double gpa) throws Exception {
         NodeList nodeList = document.getElementsByTagName("Student");
         List<Student> students = StudentXMLParser.getStudentByGPA(nodeList, gpa);
+        int len= students.size();
+        System.out.println("found "+ len + " students");
         System.out.println("=======================================");
         for (Student student : students) {
             System.out.println(student.toString());
@@ -145,6 +177,97 @@ public class Main {
         System.out.println("=======================================");
 
     }
+
+    private static void searchByLastName(Document document, String lastName) throws Exception {
+        NodeList nodeList = document.getElementsByTagName("Student");
+        List<Student> students = StudentXMLParser.getStudentByLastName(nodeList, lastName);
+        int len= students.size();
+        System.out.println("found "+ len + " students");
+        System.out.println("=======================================");
+        for (Student student : students) {
+            System.out.println(student.toString());
+        }
+
+        // show message if there is no students returned
+        if(students.isEmpty()){
+            System.out.println("Student with lastName " + lastName + " not found.");
+        }
+        System.out.println("=======================================");
+
+    }
+
+    private static void searchByID(Document document, String id) throws Exception {
+        NodeList nodeList = document.getElementsByTagName("Student");
+        List<Student> students = StudentXMLParser.getStudentByID(nodeList, id);
+        int len= students.size();
+        System.out.println("found "+ len + " students");
+        System.out.println("=======================================");
+        for (Student student : students) {
+            System.out.println(student.toString());
+        }
+
+        // show message if there is no students returned
+        if(students.isEmpty()){
+            System.out.println("Student with id " + id + " not found.");
+        }
+        System.out.println("=======================================");
+
+    }
+
+    private static void searchByGender(Document document, String gender) throws Exception {
+        NodeList nodeList = document.getElementsByTagName("Student");
+        List<Student> students = StudentXMLParser.getStudentByGender(nodeList, gender);
+        int len= students.size();
+        System.out.println("found "+ len + " students");
+        System.out.println("=======================================");
+        for (Student student : students) {
+            System.out.println(student.toString());
+        }
+
+        // show message if there is no students returned
+        if(students.isEmpty()){
+            System.out.println("Student with gender " + gender + " not found.");
+        }
+        System.out.println("=======================================");
+
+    }
+
+    private static void searchByLevel(Document document, int level) throws Exception {
+        NodeList nodeList = document.getElementsByTagName("Student");
+        List<Student> students = StudentXMLParser.getStudentByLevel(nodeList, level);
+        int len= students.size();
+        System.out.println("found "+ len + " students");
+        System.out.println("=======================================");
+        for (Student student : students) {
+            System.out.println(student.toString());
+        }
+
+        // show message if there is no students returned
+        if(students.isEmpty()){
+            System.out.println("Student with level " + level + " not found.");
+        }
+        System.out.println("=======================================");
+
+    }
+
+    private static void searchByAddress(Document document, String address) throws Exception {
+        NodeList nodeList = document.getElementsByTagName("Student");
+        List<Student> students = StudentXMLParser.getStudentByAddress(nodeList, address);
+        int len= students.size();
+        System.out.println("found "+ len + " students");
+        System.out.println("=======================================");
+        for (Student student : students) {
+            System.out.println(student.toString());
+        }
+
+        // show message if there is no students returned
+        if(students.isEmpty()){
+            System.out.println("Student with address " + address + " not found.");
+        }
+        System.out.println("=======================================");
+
+    }
+
 
     // Method to remove a student by ID
     private static void removeStudentById(Document document, String id) throws Exception {

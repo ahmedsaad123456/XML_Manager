@@ -61,19 +61,83 @@ public class MainGUILogic {
 
     // =================================================================================================================
 
-    public String searchByName(String firstName) {
+    public String searchByfName(String firstName) {
         if (firstName != null && !firstName.isEmpty()) {
             NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
             List<Student> students = StudentXMLParser.getStudentByFirstName(nodeList, firstName);
 
             return formatStudentsOutput("Students with First Name " + firstName + ":", students);
         }
-        return "No name provided.";
+        return "No first name provided.";
     }
 
     // =================================================================================================================
 
-    public String removeStudent(String id) {
+    public String searchByID(String idInput) {
+        if (idInput != null && !idInput.isEmpty()) {
+                NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+                List<Student> students = StudentXMLParser.getStudentByID(nodeList, idInput);
+
+                return formatStudentsOutput("Students with ID " + idInput + ":", students);
+        }
+        return "No ID provided.";
+    }
+
+    // =================================================================================================================
+
+    public String searchBylName(String lastName) {
+        if (lastName != null && !lastName.isEmpty()) {
+            NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+            List<Student> students = StudentXMLParser.getStudentByLastName(nodeList, lastName);
+
+            return formatStudentsOutput("Students with Last Name " + lastName + ":", students);
+        }
+        return "No last name provided.";
+    }
+
+    // =================================================================================================================
+
+    public String searchByGender(String gender) {
+        if (gender != null && !gender.isEmpty()) {
+            NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+            List<Student> students = StudentXMLParser.getStudentByGender(nodeList, gender);
+
+            return formatStudentsOutput("Students with gender " + gender + ":", students);
+        }
+        return "No gender provided.";
+    }
+
+
+    // =================================================================================================================
+
+        public String searchByAddress(String address) {
+            if (address != null && !address.isEmpty()) {
+                NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+                List<Student> students = StudentXMLParser.getStudentByAddress(nodeList, address);
+
+                return formatStudentsOutput("Students with address " + address + ":", students);
+            }
+            return "No address provided.";
+        }
+    // ================================================================
+    public String searchByLevel(String levelStr) {
+        if (levelStr != null && !levelStr.isEmpty()) {
+            try {
+                Integer level = Integer.parseInt(levelStr);
+                NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+                List<Student> students = StudentXMLParser.getStudentByLevel(nodeList, level);
+
+                return formatStudentsOutput("Students with Level " + level + ":", students);
+            } catch (NumberFormatException e) {
+                return "Invalid Level input. Please enter a valid number.";
+            }
+        }
+        return "No level provided.";
+    }
+
+    // =================================================================================================================
+
+        public String removeStudent(String id) {
         if (id != null && !id.isEmpty()) {
             try {
                 boolean removed = StudentXMLParser.removeStudentById(newDocument, id);
@@ -89,6 +153,9 @@ public class MainGUILogic {
 
     private String formatStudentsOutput(String title, List<Student> students) {
         StringBuilder output = new StringBuilder(title).append("\n");
+        int len = students.size();
+        output.append("==============================================\n");
+        output.append("Total Results: ").append(len).append(" students").append("\n");
         output.append("==============================================\n");
         for (Student student : students) {
             output.append(student).append("\n");
