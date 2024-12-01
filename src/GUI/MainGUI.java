@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.function.Function;
 
 import  GUI_Logic.MainGUILogic;
+import student.Student;
+
 public class MainGUI extends JFrame {
 
     // to show the output for each action
@@ -101,9 +103,10 @@ public class MainGUI extends JFrame {
         });
 
         // Adding placeholder listeners for other buttons
+
 //        updateStudentButton.addActionListener();
         searchButton.addActionListener(e -> showSearchPanel());
-//        sortButton.addActionListener();
+//        sortButton.addActionListener(e ->outputArea.setText(guiLogic.sortStudentDesByLevel()));
     }
 
     // =================================================================================================================
@@ -166,6 +169,10 @@ public class MainGUI extends JFrame {
             JOptionPane.showMessageDialog(this, "No input provided.", "Warning", JOptionPane.WARNING_MESSAGE);
         }
     }
+
+    // =====================================================================================================
+
+
 
     // =====================================================================================================
     public static void main(String[] args) {

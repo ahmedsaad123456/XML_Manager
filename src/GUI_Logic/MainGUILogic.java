@@ -5,6 +5,7 @@ import org.w3c.dom.NodeList;
 import student.Student;
 import student.StudentXMLParser;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class MainGUILogic {
@@ -156,6 +157,159 @@ public class MainGUILogic {
         int len = students.size();
         output.append("==============================================\n");
         output.append("Total Results: ").append(len).append(" students").append("\n");
+        output.append("==============================================\n");
+        for (Student student : students) {
+            output.append(student).append("\n");
+            output.append("==============================================\n");
+        }
+        return output.toString();
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentAscByID(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparingInt((Student student) -> Integer.parseInt(student.ID())));
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentDesByID(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparingInt((Student student) -> Integer.parseInt(student.ID())).reversed());
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentAscByFname(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparing(Student::firstName));
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentDesByFname(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparing(Student::firstName).reversed());
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentAscByLname(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparing(Student::lastName));
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentDesByLname(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparing(Student::lastName).reversed());
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentAscByGPA(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparingDouble(Student::gpa));
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentDesByGPA(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparingDouble(Student::gpa).reversed());
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentAscByGender(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparing(Student::gender));
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentDesByGender(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparing(Student::gender).reversed());
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentAscByLevel(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparingInt(Student::level));
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentDesByLevel(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparingInt(Student::level).reversed());
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentAscByAddress(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparing(Student::address));
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+    public String sortStudentDesByAddress(){
+        NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+        List<Student> students = StudentXMLParser.parseStudents(nodeList);
+        students.sort(Comparator.comparing(Student::address).reversed());
+
+        return sortOutputBuilder(students);
+    }
+
+    // =================================================================================================================
+
+
+    public String sortOutputBuilder(List<Student> students){
+        StringBuilder output = new StringBuilder("All Students:\n");
         output.append("==============================================\n");
         for (Student student : students) {
             output.append(student).append("\n");
