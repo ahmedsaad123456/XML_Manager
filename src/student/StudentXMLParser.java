@@ -1,3 +1,6 @@
+package student;
+
+import exception.DuplicateStudentIDException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -13,6 +16,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentXMLParser {
+
+
+    /**
+     * load xml file
+     *
+     * @param filePath path of the file
+     * @return the document of the xml file
+     * @throws Exception when causing any errors
+     *
+     */
+    public static Document loadXMLDocument(String filePath) throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        return builder.parse(new File(filePath));
+    }
+    // =================================================================================================================
 
     /**
      * Parses a NodeList of student nodes and creates a list of Student objects.
@@ -84,38 +103,38 @@ public class StudentXMLParser {
                 // Check if the student ID already exists
 
                 boolean idExists = existingStudents.stream()
-                        .anyMatch(existingStudent -> existingStudent.getID().equals(student.getID()));
+                        .anyMatch(existingStudent -> existingStudent.ID().equals(student.ID()));
 
                 if (idExists) {
-                    throw new DuplicateStudentIDException("Student with ID " + student.getID() + " already exists.");
+                    throw new DuplicateStudentIDException("Student with ID " + student.ID() + " already exists.");
                 }
                 // Create a "Student" element and set the "ID" attribute with the student's ID
                 Element studentElement = document.createElement("Student");
-                studentElement.setAttribute("ID", student.getID());
+                studentElement.setAttribute("ID", student.ID());
 
                 // Create and append the needed elements with the student element
                 Element firstName = document.createElement("FirstName");
-                firstName.appendChild(document.createTextNode(student.getFirstName()));
+                firstName.appendChild(document.createTextNode(student.firstName()));
                 studentElement.appendChild(firstName);
 
                 Element lastName = document.createElement("LastName");
-                lastName.appendChild(document.createTextNode(student.getLastName()));
+                lastName.appendChild(document.createTextNode(student.lastName()));
                 studentElement.appendChild(lastName);
 
                 Element gender = document.createElement("Gender");
-                gender.appendChild(document.createTextNode(student.getGender()));
+                gender.appendChild(document.createTextNode(student.gender()));
                 studentElement.appendChild(gender);
 
                 Element gpa = document.createElement("GPA");
-                gpa.appendChild(document.createTextNode(String.valueOf(student.getGpa())));
+                gpa.appendChild(document.createTextNode(String.valueOf(student.gpa())));
                 studentElement.appendChild(gpa);
 
                 Element level = document.createElement("Level");
-                level.appendChild(document.createTextNode(String.valueOf(student.getLevel())));
+                level.appendChild(document.createTextNode(String.valueOf(student.level())));
                 studentElement.appendChild(level);
 
                 Element address = document.createElement("Address");
-                address.appendChild(document.createTextNode(student.getAddress()));
+                address.appendChild(document.createTextNode(student.address()));
                 studentElement.appendChild(address);
 
                 // Add student element to the root element "University"
@@ -129,7 +148,7 @@ public class StudentXMLParser {
 
         }
         catch (DuplicateStudentIDException e) {
-            throw e;  // Rethrow the DuplicateStudentIDException to be handled by the caller
+            throw e;  // Rethrow the exception.DuplicateStudentIDException to be handled by the caller
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -150,7 +169,7 @@ public class StudentXMLParser {
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             Student student = fromNode(node);
-            if (student != null && student.getGpa() == gpa) {
+            if (student != null && student.gpa() == gpa) {
                 students.add(student);
             }
         }
@@ -172,7 +191,7 @@ public class StudentXMLParser {
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             Student student = fromNode(node);
-            if (student != null && student.getFirstName().equals(firstName)) {
+            if (student != null && student.firstName().equals(firstName)) {
                 students.add(student);
             }
         }

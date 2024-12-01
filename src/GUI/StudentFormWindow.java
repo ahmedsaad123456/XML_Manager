@@ -1,20 +1,27 @@
+package GUI;
+
+import org.w3c.dom.Document;
+import exception.DuplicateStudentIDException;
+import exception.InvalidGPAException;
+import exception.InvalidNameOrAddressException;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.w3c.dom.Document;
-import java.util.List;
-
+import GUI_Logic.StudentFormWindowLogic;
 public class StudentFormWindow extends JFrame {
     private JTextField idField, firstNameField, lastNameField, genderField, gpaField, levelField, addressField;
     private final JTextArea outputArea;
-    private Document newDocument;
+    private final StudentFormWindowLogic logic;
+
+    // =================================================================================================================
 
     public StudentFormWindow(JTextArea outputArea, Document newDocument) {
         this.outputArea = outputArea;
-        this.newDocument = newDocument;
+        this.logic = new StudentFormWindowLogic(newDocument);
 
         setTitle("Add New Student");
         setSize(400, 400);
@@ -27,6 +34,8 @@ public class StudentFormWindow extends JFrame {
         // Add submit button
         add(createButtonPanel(), BorderLayout.SOUTH);
     }
+
+    // =================================================================================================================
 
     private JPanel createFormPanel() {
         JPanel formPanel = new JPanel(new GridLayout(7, 2, 5, 5));
@@ -70,6 +79,8 @@ public class StudentFormWindow extends JFrame {
         return formPanel;
     }
 
+    // =================================================================================================================
+
     private JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel();
         JButton submitButton = new JButton("Submit");
@@ -84,34 +95,29 @@ public class StudentFormWindow extends JFrame {
         return buttonPanel;
     }
 
+    // =================================================================================================================
+
     private void addStudent() {
         try {
-            String id = idField.getText();
-            String firstName = firstNameField.getText();
-            String lastName = lastNameField.getText();
-            String gender = genderField.getText();
-            double gpa = Double.parseDouble(gpaField.getText());
-            int level = Integer.parseInt(levelField.getText());
-            String address = addressField.getText();
-
-            Student newStudent = new Student(id, firstName, lastName, gender, gpa, level, address);
-            StudentXMLParser.writeStudentsToXML(List.of(newStudent), newDocument);
-
-            newDocument = Main.loadXMLDocument("src/input_university.xml");
-            outputArea.setText("Added new student:\n" + newStudent);
+            logic.addStudent(
+                    idField.getText(),
+                    firstNameField.getText(),
+                    lastNameField.getText(),
+                    genderField.getText(),
+                    gpaField.getText(),
+                    levelField.getText(),
+                    addressField.getText()
+            );
+            outputArea.setText("Added new student:\n" + logic.getLatestStudent());
             dispose();  // Close the form window after submission
-        }
-        catch (DuplicateStudentIDException e) {
-
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-
-        }
-        catch (Exception e) {
-
+        } catch (DuplicateStudentIDException | InvalidNameOrAddressException | InvalidGPAException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Failed to add student. Please ensure all inputs are valid.", "Error", JOptionPane.ERROR_MESSAGE);
-
         }
     }
+
+    // =================================================================================================================
 
     private void customizeTextField(JTextField textField) {
         textField.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -119,7 +125,7 @@ public class StudentFormWindow extends JFrame {
         textField.setBackground(Color.WHITE);
 
         // Set padding inside the text field
-        Border outerBorder = BorderFactory.createLineBorder( Color.green.darker(), 2);
+        Border outerBorder = BorderFactory.createLineBorder(Color.green.darker(), 2);
         Border innerBorder = new EmptyBorder(5, 10, 5, 10);
         textField.setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
     }

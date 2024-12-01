@@ -1,27 +1,23 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.File;
 import java.util.List;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+
+
+import exception.DuplicateStudentIDException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Element;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+import student.Student;
+import student.StudentXMLParser;
 
 public class Main {
 
     public static void main(String[] args) {
-        final String filePath = "src/university.xml";
         final String inputFilePath = "src/input_university.xml";
         Scanner scanner = new Scanner(System.in);
 
         try {
             // Load the real XML document
-            Document newDocument = loadXMLDocument(inputFilePath);
+            Document newDocument = StudentXMLParser.loadXMLDocument(inputFilePath);
 
 
             List<Student> students = new ArrayList<>();
@@ -84,12 +80,6 @@ public class Main {
         }
     }
 
-    // Method to load XML document once
-    static Document loadXMLDocument(String filePath) throws Exception {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        return builder.parse(new File(filePath));
-    }
 
     // Method to get students from the user
     private static Student getStudents(Scanner scanner) {

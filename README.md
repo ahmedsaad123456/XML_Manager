@@ -1,4 +1,4 @@
-# University Student Management System
+# University student.Student Management System
 
 This is a Java-based web application that allows users to store, search, and delete student records in an XML file. The application is designed to perform the following operations:
 
@@ -10,7 +10,7 @@ This is a Java-based web application that allows users to store, search, and del
 ## Features
 
 - **XML Document Creation**: The system builds an XML file to store student information.
-- **Student Data Entry**: Users can enter student information such as ID, Name, GPA, and more.
+- **student.Student Data Entry**: Users can enter student information such as ID, Name, GPA, and more.
 - **Search Functionality**: Users can search for students by GPA or First Name.
 - **Delete Record**: Users can delete a student record by providing the student’s ID.
   
