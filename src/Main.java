@@ -20,9 +20,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         try {
-
-
-
             // Load the real XML document
             Document newDocument = loadXMLDocument(inputFilePath);
 

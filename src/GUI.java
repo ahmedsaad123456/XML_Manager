@@ -11,7 +11,7 @@ public class GUI extends JFrame {
     private final JTextArea outputArea;
 
     // 5 buttons that perform each functionality
-    private JButton showAllButton, searchByGPAButton, searchByNameButton, addStudentButton, removeStudentButton;
+    private JButton showAllButton,addStudentButton,updateStudentButton,searchButton,sortButton, removeStudentButton;
 
     // document of the XML file
     private Document newDocument;
@@ -59,27 +59,34 @@ public class GUI extends JFrame {
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 5));
         showAllButton = new JButton("Show All Students");
-        searchByGPAButton = new JButton("Search by GPA");
-        searchByGPAButton.setBackground(Color.yellow);
-        searchByNameButton = new JButton("Search by First Name");
-        searchByNameButton.setBackground(Color.yellow);
+        showAllButton.setBackground(Color.CYAN);
+
         addStudentButton = new JButton("Add New Student");
-        addStudentButton.setBackground(Color.green);
-        removeStudentButton = new JButton("Remove Student by ID");
-        removeStudentButton.setBackground(Color.red);
+        addStudentButton.setBackground(Color.GREEN);
+
+        updateStudentButton = new JButton("Update Student");
+        updateStudentButton.setBackground(Color.ORANGE);
+
+        searchButton = new JButton("Search");
+        searchButton.setBackground(Color.YELLOW);
+
+        sortButton = new JButton("Sort");
+        sortButton.setBackground(Color.BLUE);
+
+        removeStudentButton = new JButton("Remove Student");
+        removeStudentButton.setBackground(Color.RED);
 
         buttonPanel.add(showAllButton);
-        buttonPanel.add(searchByGPAButton);
-        buttonPanel.add(searchByNameButton);
         buttonPanel.add(addStudentButton);
+        buttonPanel.add(updateStudentButton);
+        buttonPanel.add(searchButton);
+        buttonPanel.add(sortButton);
         buttonPanel.add(removeStudentButton);
         return buttonPanel;
     }
 
     private void addListeners() {
         showAllButton.addActionListener(e -> showAllStudents());
-        searchByGPAButton.addActionListener(e -> searchByGPA());
-        searchByNameButton.addActionListener(e -> searchByName());
 
         // Open form in a new window for adding student
         addStudentButton.addActionListener(e -> {
@@ -87,6 +94,9 @@ public class GUI extends JFrame {
             formWindow.setVisible(true);
         });
 
+//        updateStudentButton.addActionListener();
+//        searchButton.addActionListener();
+//        sortButton.addActionListener();
         removeStudentButton.addActionListener(e -> removeStudent());
     }
 
