@@ -2,12 +2,10 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.util.function.Function;
 
 import  GUI_Logic.MainGUILogic;
 import exception.DuplicateStudentIDException;
-import student.Student;
 
 public class MainGUI extends JFrame {
 
@@ -103,10 +101,13 @@ public class MainGUI extends JFrame {
             }
         });
 
-        // Adding placeholder listeners for other buttons
+        updateStudentButton.addActionListener(e -> {
+            UpdateStudentWindow updateWindow = new UpdateStudentWindow(guiLogic, outputArea);
+            updateWindow.setVisible(true);
+        });
 
-//        updateStudentButton.addActionListener();
         searchButton.addActionListener(e -> showSearchPanel());
+
         sortButton.addActionListener(e -> showSortDialog());
     }
 

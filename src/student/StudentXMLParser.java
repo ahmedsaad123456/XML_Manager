@@ -11,6 +11,9 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -357,6 +360,70 @@ public class StudentXMLParser {
     }
 
     // =================================================================================================================
+    /**
+     * Updates a student's information in the XML file by ID.
+     *
+     * @param document The XML document where the student data is stored.
+     * @param id The ID of the student to be updated.
+     * @param firstName The new first name of the student.
+     * @param lastName The new last name of the student.
+     * @param gpa The new GPA of the student.
+     * @param level The new level of the student.
+     * @param gender The new gender of the student.
+     * @param address The new address of the student.
+     * @return true if the student was found and updated, false if the student was not found.
+     * @throws Exception if an error occurs while updating the XML file.
+     */
+    public static boolean updateStudentById(Document document, String id, String firstName, String lastName,
+                                            String gpa, String level, String gender, String address) throws Exception {
+        if (document == null || id == null || id.isEmpty()) {
+            return false;
+        }
+
+        NodeList students = document.getDocumentElement().getChildNodes();
+
+        for (int i = 0; i < students.getLength(); i++) {
+            Node studentNode = students.item(i);
+
+            if (studentNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element studentElement = (Element) studentNode;
+
+                // Check if the ID attribute matches
+                String studentId = studentElement.getAttribute("ID");
+                if (id.equals(studentId)) {
+
+                    updateElementValue(studentElement, "FirstName", firstName);
+                    updateElementValue(studentElement, "LastName", lastName);
+                    updateElementValue(studentElement, "GPA", gpa);
+                    updateElementValue(studentElement, "Level", level);
+                    updateElementValue(studentElement, "Gender", gender);
+                    updateElementValue(studentElement, "Address", address);
+
+                    saveDocumentToFile(document);
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    /**
+     * Updates the value of an XML element if the new value is not empty.
+     *
+     * @param parentElement The parent element containing the tag to be updated.
+     * @param tagName The name of the tag whose value needs to be updated.
+     * @param newValue The new value to be set for the tag.
+     */
+    private static void updateElementValue(Element parentElement, String tagName, String newValue) {
+        if (newValue != null && !newValue.isEmpty()) {
+            NodeList nodeList = parentElement.getElementsByTagName(tagName);
+            if (nodeList != null && nodeList.getLength() > 0) {
+                nodeList.item(0).setTextContent(newValue);
+            }
+        }
+    }
+
+    // =================================================================================================================
 
     private static void saveDocumentToFile(Document document) throws Exception {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -365,6 +432,8 @@ public class StudentXMLParser {
         StreamResult result = new StreamResult(new File("src/input_university.xml"));
         transformer.transform(source, result);
     }
+
+    // =================================================================================================================
 
 
 

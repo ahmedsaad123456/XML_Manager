@@ -224,4 +224,15 @@ public class MainGUILogic {
         }
         return output.toString();
     }
+    // =================================================================================================================
+    public String updateStudent(String id, String firstName, String lastName, String gpa, String level, String gender, String address) {
+        try {
+            boolean updated = StudentXMLParser.updateStudentById(newDocument, id, firstName, lastName, gpa, level, gender, address);
+            return updated ? "Student with ID " + id + " updated successfully." : "Student with ID " + id + " not found.";
+        } catch (Exception ex) {
+            return "Error updating student: " + ex.getMessage();
+        }
+    }
+
+
 }
