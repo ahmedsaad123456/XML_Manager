@@ -85,6 +85,7 @@ public class MainGUILogic {
         return "No ID provided.";
     }
 
+
     // =================================================================================================================
 
     public String searchBylName(String lastName) {
@@ -225,14 +226,38 @@ public class MainGUILogic {
         return output.toString();
     }
     // =================================================================================================================
-    public String updateStudent(String id, String firstName, String lastName, String gpa, String level, String gender, String address) {
+    public String updateStudent(String id, String attribute, String newValue) {
         try {
-            boolean updated = StudentXMLParser.updateStudentById(newDocument, id, firstName, lastName, gpa, level, gender, address);
-            return updated ? "Student with ID " + id + " updated successfully." : "Student with ID " + id + " not found.";
+            boolean updated = StudentXMLParser.updateStudentAttributeById(newDocument, id, attribute, newValue);
+            return updated ? "Student with ID " + id + " updated successfully for attribute " + attribute + "."
+                    : "Student with ID " + id + " not found.";
         } catch (Exception ex) {
             return "Error updating student: " + ex.getMessage();
         }
     }
+    // =================================================================================================================
+    public String getStudentDetailsByID(String idInput) {
+        if (idInput != null && !idInput.isEmpty()) {
+            NodeList nodeList = newDocument.getDocumentElement().getChildNodes();
+            List<Student> students = StudentXMLParser.getStudentByID(nodeList, idInput);
 
+            if (students.isEmpty()) {
+                return "Student with ID " + idInput + " not found.";
+            }
+
+            StringBuilder details = new StringBuilder();
+            for (Student student : students) {
+                details.append("ID: ").append(student.ID()).append("\n")
+                        .append("First Name: ").append(student.firstName()).append("\n")
+                        .append("Last Name: ").append(student.lastName()).append("\n")
+                        .append("GPA: ").append(student.gpa()).append("\n")
+                        .append("Level: ").append(student.level()).append("\n")
+                        .append("Gender: ").append(student.gender()).append("\n")
+                        .append("Address: ").append(student.address()).append("\n");
+            }
+            return details.toString();
+        }
+        return "No ID provided.";
+    }
 
 }

@@ -361,22 +361,17 @@ public class StudentXMLParser {
 
     // =================================================================================================================
     /**
-     * Updates a student's information in the XML file by ID.
+     * Updates a specific attribute of a student in the XML file by ID.
      *
      * @param document The XML document where the student data is stored.
      * @param id The ID of the student to be updated.
-     * @param firstName The new first name of the student.
-     * @param lastName The new last name of the student.
-     * @param gpa The new GPA of the student.
-     * @param level The new level of the student.
-     * @param gender The new gender of the student.
-     * @param address The new address of the student.
-     * @return true if the student was found and updated, false if the student was not found.
+     * @param attribute The name of the attribute or tag to update (e.g., "FirstName", "LastName").
+     * @param newValue The new value for the specified attribute or tag.
+     * @return true if the student was found and the attribute was updated, false otherwise.
      * @throws Exception if an error occurs while updating the XML file.
      */
-    public static boolean updateStudentById(Document document, String id, String firstName, String lastName,
-                                            String gpa, String level, String gender, String address) throws Exception {
-        if (document == null || id == null || id.isEmpty()) {
+    public static boolean updateStudentAttributeById(Document document, String id, String attribute, String newValue) throws Exception {
+        if (document == null || id == null || id.isEmpty() || attribute == null || attribute.isEmpty()) {
             return false;
         }
 
@@ -388,16 +383,10 @@ public class StudentXMLParser {
             if (studentNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element studentElement = (Element) studentNode;
 
-                // Check if the ID attribute matches
                 String studentId = studentElement.getAttribute("ID");
                 if (id.equals(studentId)) {
 
-                    updateElementValue(studentElement, "FirstName", firstName);
-                    updateElementValue(studentElement, "LastName", lastName);
-                    updateElementValue(studentElement, "GPA", gpa);
-                    updateElementValue(studentElement, "Level", level);
-                    updateElementValue(studentElement, "Gender", gender);
-                    updateElementValue(studentElement, "Address", address);
+                    updateElementValue(studentElement, attribute, newValue);
 
                     saveDocumentToFile(document);
 
@@ -407,6 +396,7 @@ public class StudentXMLParser {
         }
         return false;
     }
+
     /**
      * Updates the value of an XML element if the new value is not empty.
      *
@@ -422,6 +412,7 @@ public class StudentXMLParser {
             }
         }
     }
+
 
     // =================================================================================================================
 

@@ -102,7 +102,7 @@ public class MainGUI extends JFrame {
         });
 
         updateStudentButton.addActionListener(e -> {
-            UpdateStudentWindow updateWindow = new UpdateStudentWindow(guiLogic, outputArea);
+            UpdateStudentWindow updateWindow = new UpdateStudentWindow(guiLogic);
             updateWindow.setVisible(true);
         });
 
