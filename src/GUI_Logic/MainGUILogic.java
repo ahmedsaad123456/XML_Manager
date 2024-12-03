@@ -1,6 +1,8 @@
 package GUI_Logic;
 
 import exception.DuplicateStudentIDException;
+import exception.InvalidGPAException;
+import exception.InvalidNameOrAddressException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import student.Student;
@@ -231,6 +233,10 @@ public class MainGUILogic {
             boolean updated = StudentXMLParser.updateStudentAttributeById(newDocument, id, attribute, newValue);
             return updated ? "Student with ID " + id + " updated successfully for attribute " + attribute + "."
                     : "Student with ID " + id + " not found.";
+        }catch (InvalidNameOrAddressException ex) {
+            return "Error: Invalid value for attribute " + attribute + ". " + ex.getMessage();
+        } catch (InvalidGPAException ex) {
+            return "Error: Invalid GPA value. " + ex.getMessage();
         } catch (Exception ex) {
             return "Error updating student: " + ex.getMessage();
         }

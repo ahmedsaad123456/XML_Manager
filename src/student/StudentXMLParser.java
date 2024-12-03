@@ -1,6 +1,8 @@
 package student;
 
 import exception.DuplicateStudentIDException;
+import exception.InvalidGPAException;
+import exception.InvalidNameOrAddressException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -375,6 +377,23 @@ public class StudentXMLParser {
             return false;
         }
 
+        // Validate specific attributes
+        if (attribute.equals("FirstName") || attribute.equals("LastName") || attribute.equals("Address")) {
+            if (!newValue.matches("[a-zA-Z]+")) {
+                throw new InvalidNameOrAddressException("The value for " + attribute + " must contain only alphabetic characters.");
+            }
+        } else if (attribute.equals("GPA")) {
+            // Validate GPA
+            double gpa;
+            try {
+                gpa = Double.parseDouble(newValue);
+                if (gpa < 0 || gpa > 4) {
+                    throw new InvalidGPAException("GPA must be between 0 and 4.");
+                }
+            } catch (NumberFormatException e) {
+                throw new InvalidGPAException("GPA must be a valid number between 0 and 4.");
+            }
+        }
         NodeList students = document.getDocumentElement().getChildNodes();
 
         for (int i = 0; i < students.getLength(); i++) {
